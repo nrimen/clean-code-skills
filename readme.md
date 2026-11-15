@@ -2,8 +2,8 @@
 
 Four agent skills that help engineers, and the AI assistants coding with them, write clean code and check it afterwards.
 
-- **Write it right:** `principles-first` and `solid-first` guide the assistant *while* it writes or changes code.
-- **Check it:** `principles-audit` and `solid-audit` read your code *afterwards* and write a report with `file:line` evidence and concrete fixes.
+- **Write it right:** `clean-principles-first` and `solid-first` guide the assistant *while* it writes or changes code.
+- **Check it:** `clean-principles-audit` and `solid-audit` read your code *afterwards* and write a report with `file:line` evidence and concrete fixes.
 
 The audits are read-only for your source code: they never edit, commit or push. The only file they write is the report.
 
@@ -11,8 +11,8 @@ The audits are read-only for your source code: they never edit, commit or push. 
 
 | Skill | Type | What it does |
 |---|---|---|
-| [`principles-first`](principles-first/SKILL.md) | Guide | Applies DRY, KISS, YAGNI, Single Responsibility and Separation of Concerns before and during any coding work |
-| [`principles-audit`](principles-audit/SKILL.md) | Audit | Reports, for each of those 5 principles, whether the code respects it (✅ ⚠️ ❌ ➖) with evidence and fixes |
+| [`clean-principles-first`](clean-principles-first/SKILL.md) | Guide | Applies DRY, KISS, YAGNI, Single Responsibility and Separation of Concerns before and during any coding work |
+| [`clean-principles-audit`](clean_principles-audit/SKILL.md) | Audit | Reports, for each of those 5 principles, whether the code respects it (✅ ⚠️ ❌ ➖) with evidence and fixes |
 | [`solid-first`](solid-first/SKILL.md) | Guide | Applies the 5 SOLID principles when designing or changing structure: modules, interfaces, integrations, new variants |
 | [`solid-audit`](solid-audit/SKILL.md) | Audit | Reports, for each SOLID principle, whether the design respects it, including "over-applied" abstractions |
 
@@ -61,8 +61,8 @@ git clone <repo-url> clean-code-skills
 
 | Skill | Install (one line) | How to use it |
 |---|---|---|
-| `principles-first` | `mkdir -p .claude/skills && cp -r clean-code-skills/principles-first .claude/skills/` | Loads on its own before the assistant writes code. Just ask for the change: *"Add a reset-password endpoint."* |
-| `principles-audit` | `mkdir -p .claude/skills && cp -r clean-code-skills/principles-audit .claude/skills/` | Ask for it: *"Audit this branch against DRY, KISS and YAGNI."* |
+| `principles-first` | `mkdir -p .claude/skills && cp -r clean-code-skills/clean_principles-first .claude/skills/` | Loads on its own before the assistant writes code. Just ask for the change: *"Add a reset-password endpoint."* |
+| `principles-audit` | `mkdir -p .claude/skills && cp -r clean-code-skills/clean_principles-audit .claude/skills/` | Ask for it: *"Audit this branch against DRY, KISS and YAGNI."* |
 | `solid-first` | `mkdir -p .claude/skills && cp -r clean-code-skills/solid-first .claude/skills/` | Loads on its own when the assistant designs or restructures code: *"Add Stripe as a new payment provider."* |
 | `solid-audit` | `mkdir -p .claude/skills && cp -r clean-code-skills/solid-audit .claude/skills/` | Ask for it: *"Is my code SOLID? Check the services folder."* |
 
@@ -78,7 +78,7 @@ Any assistant that supports the `SKILL.md` format works the same way: copy the s
 
 | Skill | Report written to |
 |---|---|
-| `principles-audit` | `principles-audits/<scope>-<date>.md` |
+| `clean_principles-audit` | `clean_principles-audits/<scope>-<date>.md` |
 | `solid-audit` | `solid-audits/<scope>-<date>.md` |
 
 Reports go to the repo root unless your project already has a reports folder. If you don't want them committed, add those folders to `.gitignore`.
@@ -103,9 +103,9 @@ clean-code-skills/
 ├── README.md
 ├── LICENSE
 ├── CONTRIBUTING.md
-├── principles-first/
+├── clean_principles-first/
 │   └── SKILL.md
-├── principles-audit/
+├── clean_principles-audit/
 │   └── SKILL.md
 ├── solid-first/
 │   └── SKILL.md
