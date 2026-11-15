@@ -1,0 +1,58 @@
+---
+name: solid-first
+description: "Apply the 5 SOLID design principles — Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion — when designing or changing code structure. Use this skill before creating or changing classes, modules, services, interfaces, components, APIs, data access or integrations, before adding a new variant of something (new type, provider, payment method, format), before introducing inheritance or dependency injection, and when planning a feature or refactor. Works in any language or paradigm. Not needed for edits inside a single function, styling, copy or config changes."
+---
+
+# SOLID First
+
+When the task touches how code is structured (new modules, classes, services, interfaces, integrations, variants), apply SOLID. Skip this skill for edits inside a single function that don't change what the module depends on or exposes.
+
+Terms adapt to the language: **module** = class, module, file, component or service; **abstraction** = interface, protocol, trait, abstract class, type, function signature or contract.
+
+## Before you start
+
+1. Read the existing structure: which modules, interfaces and dependencies already exist, and how the project wires them (DI container, factories, plain parameters).
+2. Decide where the change belongs and what it depends on, before writing it.
+3. Reuse existing abstractions before creating new ones.
+
+## The 5 principles
+
+**S — Single Responsibility** — Each module has one reason to change and serves one concern. Keep business rules apart from persistence, transport, formatting and framework code. If a change for one kind of request would also touch another concern, split them.
+
+**O — Open/Closed** — When something has several variants that keep growing (providers, formats, payment methods, user types), structure it so a new variant means adding code, not editing many places: a map, a strategy, a registry, or polymorphism. Don't repeat the same `switch` on a type across files.
+
+**L — Liskov Substitution** — Every implementation must honor its contract: accept every input the contract allows, return what it promises, keep the same guarantees, no "not supported" throws. If a subtype can't do what the parent promises, don't inherit; use composition or a smaller interface.
+
+**I — Interface Segregation** — Keep contracts small and focused on what each client needs. Don't make a function or component take a large object when that forces callers or tests to build data it never reads, or ties it to an unrelated module. Passing a cohesive domain object is fine.
+
+**D — Dependency Inversion** — Business logic depends on abstractions; infrastructure (DB, HTTP, SDKs, file system, framework, clock, randomness) is reached through one boundary (a parameter, an injected dependency, or a single wrapper module the project already uses), never built inline in business logic. Use the project's existing wiring; if it has none, pass dependencies as parameters and don't introduce a container. This keeps core logic testable and swappable. Stable things (standard library, pure utilities, value objects) can be used directly.
+
+## Don't over-apply
+
+SOLID must not create needless complexity. KISS and YAGNI still win:
+- No interface with a single implementation unless it marks a real boundary (DB, external API, framework) or is needed for tests.
+- No strategy/factory/plugin setup for something with one case. Add it when the same branch on type would have to be written in a second place.
+- No DI for things that never change and never need faking.
+- Scale to the project: a small script needs none of this.
+
+## Pairs with principles-first and solid-audit
+
+`principles-first` covers DRY, KISS, YAGNI, Single Responsibility and Separation of Concerns for all coding work; this skill adds the structural principles on top. Single Responsibility appears in both: apply it once, not twice. When the two pull in different directions, KISS and YAGNI win. After a significant structural change, `solid-audit` can check the result.
+
+## Existing code that breaks SOLID
+
+- **Code you must change:** improve it only as far as your task needs (e.g. inject the dependency you're adding instead of hard-coding it; add the new variant the extensible way if a clean spot exists).
+- **Code you don't need to touch:** leave it. Mention it in one line in your final message.
+- Never start a large redesign the user didn't ask for. Propose it instead.
+
+## Before you finish
+
+Quick self-check on what you designed or changed:
+- Does each module have one reason to change?
+- Where variants already exist, can the next one be added without editing several places?
+- Does every implementation honor its contract with no surprises?
+- Does each client depend only on what it uses?
+- Is core logic free of hard-coded infrastructure?
+- Did I add any abstraction that isn't needed yet?
+
+Fix what fails. In your final message, add one short line if a principle shaped a design decision (e.g. "Payment providers registered in a map so a new one is one new file"), and list any SOLID issues you noticed but left alone, one line each.
