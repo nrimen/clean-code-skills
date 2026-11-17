@@ -1,11 +1,12 @@
 # clean-code-skills
 
-Four agent skills that help engineers, and the AI assistants coding with them, write clean code and check it afterwards.
+Five agent skills that help engineers, and the AI assistants coding with them, write clean code and check it afterwards.
 
 - **Write it right:** `clean-principles-first` and `solid-first` guide the assistant *while* it writes or changes code.
 - **Check it:** `clean-principles-audit` and `solid-audit` read your code *afterwards* and write a report with `file:line` evidence and concrete fixes.
+- **Review it:** `code-review` reviews a branch before merge for bugs, security holes and quality issues, runs your linters and tests, and writes a severity-ranked report.
 
-The audits are read-only for your source code: they never edit, commit or push. The only file they write is the report.
+The audits and the review are read-only for your source code: they never edit, commit or push. The only file they write is the report.
 
 ## What's inside
 
@@ -15,17 +16,19 @@ The audits are read-only for your source code: they never edit, commit or push. 
 | [`clean-principles-audit`](clean_principles-audit/SKILL.md) | Audit | Reports, for each of those 5 principles, whether the code respects it (✅ ⚠️ ❌ ➖) with evidence and fixes |
 | [`solid-first`](solid-first/SKILL.md) | Guide | Applies the 5 SOLID principles when designing or changing structure: modules, interfaces, integrations, new variants |
 | [`solid-audit`](solid-audit/SKILL.md) | Audit | Reports, for each SOLID principle, whether the design respects it, including "over-applied" abstractions |
+| [`code-review`](code-review/SKILL.md) | Review | Reviews the current branch (or the files you name) for bugs, security, error handling, performance and tests; runs the project's own checks; ranks findings 🔴 Critical to ⚪ Nit |
 
 ## Which skill should I use?
 
 | I want to… | Use |
 |---|---|
-| Have the assistant write simple, non-duplicated, well-layered code | `principles-first` |
-| Have the assistant design a new module, service or integration cleanly | `solid-first` (plus `principles-first`) |
-| Know if my code is DRY, simple, not over-engineered, well separated | `principles-audit` |
+| Have the assistant write simple, non-duplicated, well-layered code | `clean-principles-first` |
+| Have the assistant design a new module, service or integration cleanly | `solid-first` (plus `pclean-rinciples-first`) |
+| Know if my code is DRY, simple, not over-engineered, well separated | `clean-principles-audit` |
 | Know if my design is extensible, testable and loosely coupled | `solid-audit` |
+| Know if my branch is ready to merge: bugs, security holes, missing tests | `code-review` |
 
-A typical flow: the `-first` skills shape the code as it is written, and the `-audit` skills check it afterwards.
+A typical flow: the `-first` skills shape the code as it is written, `code-review` checks the branch before merging, and the `-audit` skills check the design in depth.
 
 ## The principles
 
@@ -61,10 +64,11 @@ git clone <repo-url> clean-code-skills
 
 | Skill | Install (one line) | How to use it |
 |---|---|---|
-| `principles-first` | `mkdir -p .claude/skills && cp -r clean-code-skills/clean_principles-first .claude/skills/` | Loads on its own before the assistant writes code. Just ask for the change: *"Add a reset-password endpoint."* |
-| `principles-audit` | `mkdir -p .claude/skills && cp -r clean-code-skills/clean_principles-audit .claude/skills/` | Ask for it: *"Audit this branch against DRY, KISS and YAGNI."* |
+| `clean-principles-first` | `mkdir -p .claude/skills && cp -r clean-code-skills/clean-principles-first .claude/skills/` | Loads on its own before the assistant writes code. Just ask for the change: *"Add a reset-password endpoint."* |
+| `clean-principles-audit` | `mkdir -p .claude/skills && cp -r clean-code-skills/clean-principles-audit .claude/skills/` | Ask for it: *"Audit this branch against DRY, KISS and YAGNI."* |
 | `solid-first` | `mkdir -p .claude/skills && cp -r clean-code-skills/solid-first .claude/skills/` | Loads on its own when the assistant designs or restructures code: *"Add Stripe as a new payment provider."* |
 | `solid-audit` | `mkdir -p .claude/skills && cp -r clean-code-skills/solid-audit .claude/skills/` | Ask for it: *"Is my code SOLID? Check the services folder."* |
+| `code-review` | `mkdir -p .claude/skills && cp -r clean-code-skills/code-review .claude/skills/` | Ask for it: *"Review my branch"* or *"Is this ready to merge?"*, or type `/code-review`. It runs your configured linters and tests (check mode only). |
 
 To make a skill available in all your projects instead, use `~/.claude/skills/` in place of `.claude/skills/`. You can also call a skill by name, for example `/solid-audit`, instead of describing the task.
 
@@ -80,6 +84,7 @@ Any assistant that supports the `SKILL.md` format works the same way: copy the s
 |---|---|
 | `clean_principles-audit` | `clean_principles-audits/<scope>-<date>.md` |
 | `solid-audit` | `solid-audits/<scope>-<date>.md` |
+| `code-review` | `code-reviews/<branch>-<date>.md` |
 
 Reports go to the repo root unless your project already has a reports folder. If you don't want them committed, add those folders to `.gitignore`.
 
@@ -90,11 +95,13 @@ Reports go to the repo root unless your project already has a reports folder. If
 - `solid-audit` also flags `[over-applied]` findings: abstractions that add complexity without a real need.
 - Every finding points to a `file:line` and explains why it matters. No evidence, no finding.
 - Each report ends with the top 3 fixes to make first.
+- `code-review` uses its own scale: a merge verdict (✅ Ready · ⚠️ After fixes · ⛔ Not ready) and findings ranked 🔴 Critical, 🟠 Major, 🟡 Minor, ⚪ Nit, ❓ Question. It reports only what the change introduces or makes worse.
 
 ## Good to know
 
 - **Single Responsibility appears in both families.** If you run `principles-audit` and `solid-audit` on the same code, expect some overlap on SRP.
 - **Some logic is duplicated between skills on purpose** (scope detection, verdict definitions). Each skill must work on its own when copied alone, so they don't share files.
+- **`code-review` vs the audits.** `code-review` asks "does this change work, and is it safe?". The audits ask "is the design clean, principle by principle?". They complement each other, and `code-review` sends principle-by-principle questions to the audits.
 
 ## Repository layout
 
@@ -103,6 +110,14 @@ clean-code-skills/
 ├── README.md
 ├── LICENSE
 ├── CONTRIBUTING.md
+├── .gitattributes
+├── code-review/
+│   ├── SKILL.md
+│   ├── scripts/detect_context.sh
+│   ├── assets/report-template.md
+│   └── references/
+│       ├── review-checklist.md
+│       └── languages/   (JS/TS, Python, Go, Java/Kotlin, Rust, shell/config)
 ├── clean_principles-first/
 │   └── SKILL.md
 ├── clean_principles-audit/
