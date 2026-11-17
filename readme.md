@@ -59,7 +59,7 @@ Both families stay pragmatic: they include rules against over-applying the princ
 Clone the repo once, then install each skill with one line from your project root. Each skill is self-contained, so install only the ones you need.
 
 ```bash
-git clone <repo-url> clean-code-skills
+git clone https://github.com/nrimen/clean-code-skills.git clean-code-skills
 ```
 
 | Skill | Install (one line) | How to use it |
