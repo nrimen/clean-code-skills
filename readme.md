@@ -82,7 +82,7 @@ Any assistant that supports the `SKILL.md` format works the same way: copy the s
 
 | Skill | Report written to |
 |---|---|
-| `clean_principles-audit` | `clean_principles-audits/<scope>-<date>.md` |
+| `clean-principles-audit` | `clean-principles-audits/<scope>-<date>.md` |
 | `solid-audit` | `solid-audits/<scope>-<date>.md` |
 | `code-review` | `code-reviews/<branch>-<date>.md` |
 
@@ -96,6 +96,47 @@ Reports go to the repo root unless your project already has a reports folder. If
 - Every finding points to a `file:line` and explains why it matters. No evidence, no finding.
 - Each report ends with the top 3 fixes to make first.
 - `code-review` uses its own scale: a merge verdict (✅ Ready · ⚠️ After fixes · ⛔ Not ready) and findings ranked 🔴 Critical, 🟠 Major, 🟡 Minor, ⚪ Nit, ❓ Question. It reports only what the change introduces or makes worse.
+
+
+## Before and after
+
+Audits of a real feature from a production app (project details removed): first on the code as it was written, then again after reworking it with the skills and the audit's findings.
+
+### principles-audit
+
+| Principle | Before | After |
+|---|---|---|
+| DRY | ❌ 5 | ✅ 0 |
+| KISS | ⚠️ 3 | ✅ 0 |
+| YAGNI | ⚠️ 4 | ✅ 0 |
+| Single Responsibility | ⚠️ 3 | ⚠️ 1 |
+| Separation of Concerns | ⚠️ 2 | ⚠️ 1 |
+
+- **Before:** the same knowledge was written in several places (three decoders for one token format, two readers for the same state), and one UI component had grown into a second feature.
+- **After:** each lookup and naming rule exists once, migration leftovers are gone, and one module owns each external API. Two small, non-blocking issues remain.
+
+### solid-audit
+
+| Principle | Before | After |
+|---|---|---|
+| S: Single Responsibility | ⚠️ 2 | ⚠️ 1 |
+| O: Open/Closed | ⚠️ 2 | ✅ 0 |
+| L: Liskov Substitution | ⚠️ 1 | ✅ 0 |
+| I: Interface Segregation | ⚠️ 2 | ✅ 0 |
+| D: Dependency Inversion | ❌ 3 (+1 over-applied) | ⚠️ 1 |
+
+- **Before:** modules reached into each other's state, two modules imported each other, and one provider made raw HTTP calls.
+- **After:** dependencies point one way and a lint rule enforces it. Identity is passed in from the app's entry point instead of being looked up.
+
+### What a finding looks like
+
+Every finding gives the exact place and a fix. An example with fictional names:
+
+> **Single Responsibility: ⚠️ Partially**
+> - **`src/api/http.ts:56-58`**: `apiFetch` turns every 403 into "You aren't allowed to edit your profile". That wording was written for the profile page, when `apiFetch` only served profile calls. It now also serves the orders list, so a 403 there shows a profile error. The module has two reasons to change: the transport rules and one screen's copy. **Fix:** keep `apiFetch` generic and let it throw an error that carries `status`. Let the profile screen add its own wording when it sees a 403.
+
+*One project, one run, not a benchmark. The audits are judgment, so results vary.*
+
 
 ## Good to know
 
