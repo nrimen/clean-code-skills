@@ -10,13 +10,13 @@ The audits and the review are read-only for your source code: they never edit, c
 
 ## What's inside
 
-| Skill | Type | What it does |
-|---|---|---|
-| [`clean-principles-first`](clean-principles-first/SKILL.md) | Guide | Applies DRY, KISS, YAGNI, Single Responsibility and Separation of Concerns before and during any coding work |
-| [`clean-principles-audit`](clean_principles-audit/SKILL.md) | Audit | Reports, for each of those 5 principles, whether the code respects it (✅ ⚠️ ❌ ➖) with evidence and fixes |
-| [`solid-first`](solid-first/SKILL.md) | Guide | Applies the 5 SOLID principles when designing or changing structure: modules, interfaces, integrations, new variants |
-| [`solid-audit`](solid-audit/SKILL.md) | Audit | Reports, for each SOLID principle, whether the design respects it, including "over-applied" abstractions |
-| [`code-review`](code-review/SKILL.md) | Review | Reviews the current branch (or the files you name) for bugs, security, error handling, performance and tests; runs the project's own checks; ranks findings 🔴 Critical to ⚪ Nit |
+| Skill | Type | What it does | Security Badge
+|---|---|---|---|
+| [`clean-principles-first`](clean-principles-first/SKILL.md) | Guide | Applies DRY, KISS, YAGNI, Single Responsibility and Separation of Concerns before and during any coding work |[![Security: A — Skills Directory](https://www.skillsdirectory.com/api/skills/nrimen-clean-principles-first/badge)](https://www.skillsdirectory.com/skills/nrimen-clean-principles-first)|
+| [`clean-principles-audit`](clean_principles-audit/SKILL.md) | Audit | Reports, for each of those 5 principles, whether the code respects it (✅ ⚠️ ❌ ➖) with evidence and fixes |[![Security: A — Skills Directory](https://www.skillsdirectory.com/api/skills/nrimen-clean-principles-audit/badge)](https://www.skillsdirectory.com/skills/nrimen-clean-principles-audit)|
+| [`solid-first`](solid-first/SKILL.md) | Guide | Applies the 5 SOLID principles when designing or changing structure: modules, interfaces, integrations, new variants |[![Security: A — Skills Directory](https://www.skillsdirectory.com/api/skills/nrimen-solid-first/badge)](https://www.skillsdirectory.com/skills/nrimen-solid-first)|
+| [`solid-audit`](solid-audit/SKILL.md) | Audit | Reports, for each SOLID principle, whether the design respects it, including "over-applied" abstractions |[![Security: A — Skills Directory](https://www.skillsdirectory.com/api/skills/nrimen-solid-audit/badge)](https://www.skillsdirectory.com/skills/nrimen-solid-audit)|
+| [`code-review`](code-review/SKILL.md) | Review | Reviews the current branch (or the files you name) for bugs, security, error handling, performance and tests; runs the project's own checks; ranks findings 🔴 Critical to ⚪ Nit |[![Security: A — Skills Directory](https://www.skillsdirectory.com/api/skills/nrimen-code-review/badge)](https://www.skillsdirectory.com/skills/nrimen-code-review)|
 
 ## Which skill should I use?
 
